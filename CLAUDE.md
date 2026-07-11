@@ -16,9 +16,11 @@ is tourists, locals, and families; priorities are speed, ease, and a sleek feel.
 
 ## Current State
 
-Fresh `create-next-app` scaffold — App Router, TypeScript, Tailwind v4, pnpm.
-Only the default `app/` (`page.tsx`, `layout.tsx`, `globals.css`) exists. **No
-Sanity, no shadcn, no content, no schema yet** — those are the next steps below.
+End-to-end slice is live: Next.js 16 App Router (TypeScript, Tailwind v4, pnpm)
+deployed on Vercel, backed by Sanity with the `coffeeShop` schema and Studio
+embedded at `/studio`. The landing list renders styled shadcn cards from a GROQ
+query, and `/coffee-shops/[slug]` detail pages are statically generated. Real
+café content is entered and showing on the live site.
 
 ## Commands
 
@@ -36,9 +38,9 @@ pnpm lint     # eslint
 | Layer | Choice | Why |
 |-------|--------|-----|
 | Framework | **Next.js 16 (App Router)** | React (existing skill) + server/static rendering. SEO is make-or-break, so we need real HTML in the initial response, not a client-only SPA. |
-| Content + data | **Sanity** *(planned)* | Hosted content DB *and* image CDN *and* a hosted editing UI (Studio) in one — the editing UI is the key win for Jess. Document-based, queried with GROQ. |
-| Styling | **Tailwind v4** (+ **shadcn/ui** *planned*) | Fast to build, plays well with Claude Code; shadcn gives polished, owned components. |
-| Hosting | **Vercel** *(planned)* | Zero-friction Git → deploy, preview URLs, generous free tier. |
+| Content + data | **Sanity** | Hosted content DB *and* image CDN *and* a hosted editing UI (Studio) in one — the editing UI is the key win for Jess. Document-based, queried with GROQ. |
+| Styling | **Tailwind v4** (+ **shadcn/ui**) | Fast to build, plays well with Claude Code; shadcn gives polished, owned components. |
+| Hosting | **Vercel** | Zero-friction Git → deploy, preview URLs, generous free tier. |
 | Domain | `*.vercel.app` for now | Custom domain is a fast-follow. |
 
 ## Key Decisions & Rationale
@@ -56,9 +58,9 @@ pnpm lint     # eslint
 - **Store lat/long from day one** — via Sanity's native `geopoint`, even though
   distance sorting comes later. Avoids re-editing every entry.
 
-## Data Model (planned)
+## Data Model
 
-A single `coffeeShop` Sanity document will drive both views. The **landing list**
+A single `coffeeShop` Sanity document drives both views. The **landing list**
 needs only lightweight, sortable fields; richer content lives on the **shop page**.
 
 - **List/sort:** `name`, `slug`, `shortDescription`, `rating` + `priceLevel`
@@ -67,30 +69,3 @@ needs only lightweight, sortable fields; richer content lives on the **shop page
   `address`, `location` (geopoint), contact links.
 - **Studio conventions:** group fields into tabs with helper text for Jess;
   image `alt` text is required.
-
-## Roadmap
-
-Build a boring end-to-end slice live first, then layer on content and views over
-a pipeline we already trust. **Do these one at a time; confirm each is live
-before the next.**
-
-1. **Scaffold + deploy empty app** — push to GitHub → import to Vercel. Done when
-   a commit to `main` auto-deploys and the default page loads at a `.vercel.app` URL.
-2. **Set up Sanity + real data** — create project, add the `coffeeShop` schema,
-   embed Studio at `/studio`, enter 2–3 real cafés (required fields only). Done
-   when shops appear in the Studio.
-3. **Connect Next → Sanity, render plain** — wire up `next-sanity`, one GROQ list
-   query, dump results as a bare list. Add env vars to Vercel too. Done when real
-   café names show on the live site.
-4. **Style the landing list** — Tailwind/shadcn cards with `next/image`, name,
-   short description, rating, price badge; statically generated. No sorting yet.
-   Done when it looks presentable.
-5. **Shop page by slug** — dynamic route `/coffee-shops/[slug]` with a second GROQ
-   query + `generateStaticParams` for static pre-rendering. Done when list →
-   detail navigation works.
-
-### Deferred (fast-follows, no rework needed)
-
-Client-side sorting/filtering UI · geo/distance sorting · JSON-LD `LocalBusiness`
-structured data (rich search results) · analytics (Plausible / Vercel) · custom
-domain.
