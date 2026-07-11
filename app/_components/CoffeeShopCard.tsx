@@ -1,12 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { urlFor } from '@/sanity/lib/image'
 import type { COFFEE_SHOPS_QUERY_RESULT } from '@/sanity.types'
-import { priceLabel } from '@/app/_lib/format'
+import { PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
 
 type Shop = COFFEE_SHOPS_QUERY_RESULT[number]
 
@@ -33,14 +31,9 @@ export function CoffeeShopCard({ shop }: { shop: Shop }) {
         <CardContent className="flex flex-1 flex-col gap-2 py-5">
           <div className="flex items-baseline justify-between gap-3">
             <CardTitle className="text-lg">{shop.name}</CardTitle>
-            <Badge className="shrink-0 gap-1">
-              <Star className="fill-current" />
-              {shop.rating}/10
-            </Badge>
+            <RatingBadge rating={shop.rating} />
           </div>
-          <Badge variant="secondary" className="w-fit">
-            {priceLabel(shop.priceLevel)}
-          </Badge>
+          <PriceBadge level={shop.priceLevel} className="w-fit" />
           {shop.shortDescription && (
             <p className="text-sm leading-6 text-muted-foreground">
               {shop.shortDescription}

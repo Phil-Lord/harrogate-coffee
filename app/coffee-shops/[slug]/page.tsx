@@ -7,7 +7,7 @@ import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
 import { COFFEE_SHOP_QUERY, COFFEE_SHOP_SLUGS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOP_QUERY_RESULT } from '@/sanity.types'
-import { priceLabel } from '@/app/_lib/format'
+import { PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -63,12 +63,8 @@ export default async function CoffeeShopPage({ params }: Props) {
         <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
           {shop.name}
         </h1>
-        <span className="rounded-full bg-black px-3 py-1 text-sm font-semibold text-white dark:bg-white dark:text-black">
-          ★ {shop.rating}/10
-        </span>
-        <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
-          {priceLabel(shop.priceLevel)}
-        </span>
+        <RatingBadge rating={shop.rating} />
+        <PriceBadge level={shop.priceLevel} />
       </div>
 
       {shop.shortDescription && (
