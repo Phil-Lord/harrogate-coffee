@@ -66,7 +66,7 @@ export default async function CoffeeShopPage({ params }: Props) {
       )}
 
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
           {shop.name}
         </h1>
         <PriceBadge level={shop.priceLevel} />
