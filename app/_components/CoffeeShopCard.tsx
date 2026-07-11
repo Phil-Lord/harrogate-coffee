@@ -10,15 +10,15 @@ import { priceLabel } from '@/app/_lib/format'
 
 export function CoffeeShopCard({ shop }: { shop: CoffeeShop }) {
   return (
-    <Link href={`/coffee-shops/${shop.slug}`} className="group block h-full">
-      <Card className="h-full gap-0 p-0 transition-shadow hover:shadow-lg">
-        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+    <Link href={`/coffee-shops/${shop.slug}`} className="group block">
+      <Card className="flex-col gap-0 p-0 transition-shadow hover:shadow-lg sm:min-h-44 sm:flex-row">
+        <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-64">
           {shop.mainImage ? (
             <Image
               src={urlFor(shop.mainImage).width(800).height(600).fit('crop').auto('format').url()}
               alt={shop.mainImage.alt ?? shop.name}
               fill
-              sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw"
+              sizes="(min-width: 640px) 256px, 100vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
@@ -26,19 +26,19 @@ export function CoffeeShopCard({ shop }: { shop: CoffeeShop }) {
               No photo yet
             </div>
           )}
-          <Badge className="absolute top-3 right-3 gap-1 bg-background/80 text-foreground backdrop-blur">
-            <Star className="fill-current" />
-            {shop.rating}/10
-          </Badge>
         </div>
 
-        <CardContent className="flex flex-col gap-1.5 py-4">
-          <div className="flex items-baseline justify-between gap-2">
+        <CardContent className="flex flex-1 flex-col gap-2 py-5">
+          <div className="flex items-baseline justify-between gap-3">
             <CardTitle className="text-lg">{shop.name}</CardTitle>
-            <Badge variant="secondary" className="shrink-0">
-              {priceLabel(shop.priceLevel)}
+            <Badge className="shrink-0 gap-1">
+              <Star className="fill-current" />
+              {shop.rating}/10
             </Badge>
           </div>
+          <Badge variant="secondary" className="w-fit">
+            {priceLabel(shop.priceLevel)}
+          </Badge>
           {shop.shortDescription && (
             <p className="text-sm leading-6 text-muted-foreground">
               {shop.shortDescription}
