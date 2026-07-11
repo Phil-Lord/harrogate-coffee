@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { client } from '@/sanity/lib/client'
 import { COFFEE_SHOPS_QUERY, type CoffeeShop } from '@/sanity/lib/queries'
 import { CoffeeShopCard } from '@/app/_components/CoffeeShopCard'
@@ -9,23 +11,23 @@ export default async function Home() {
   const shops = await client.fetch<CoffeeShop[]>(COFFEE_SHOPS_QUERY)
 
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16">
-      <header className="mb-10 flex flex-col gap-3">
-        <h1 className="text-4xl font-semibold tracking-tight text-black dark:text-zinc-50">
+    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+      <header className="mb-8 flex flex-col gap-2">
+        <h1 className="font-heading text-4xl font-semibold tracking-tight">
           Harrogate Coffee Shops
         </h1>
       </header>
 
       {shops.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-zinc-300 p-8 text-center text-zinc-500 dark:border-zinc-700">
+        <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">
           No coffee shops yet — add some in the{' '}
-          <a href="/studio" className="underline">
+          <Link href="/studio" className="underline">
             Studio
-          </a>
+          </Link>
           .
         </p>
       ) : (
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="flex flex-col gap-4">
           {shops.map((shop) => (
             <li key={shop._id}>
               <CoffeeShopCard shop={shop} />
