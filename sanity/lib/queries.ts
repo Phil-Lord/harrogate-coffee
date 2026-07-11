@@ -1,4 +1,5 @@
 import { defineQuery } from 'next-sanity'
+import type { PortableTextBlock } from 'next-sanity'
 import type { SanityImageSource } from '@sanity/image-url'
 
 // Sanity image field with the required `alt` text.
@@ -13,6 +14,7 @@ export type CoffeeShop = {
   rating: number
   priceLevel: number
   mainImage: CoffeeShopImage | null
+  description: PortableTextBlock[] | null
 }
 
 // Landing list: lightweight, sortable fields, ranked best-first.
@@ -43,6 +45,7 @@ export const COFFEE_SHOP_QUERY = defineQuery(/* groq */ `
     shortDescription,
     rating,
     priceLevel,
-    mainImage
+    mainImage,
+    description
   }
 `)

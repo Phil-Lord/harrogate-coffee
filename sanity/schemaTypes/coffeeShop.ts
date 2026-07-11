@@ -30,6 +30,13 @@ export const coffeeShop = defineType({
       validation: (rule) => rule.max(160).warning('Aim for under 160 characters.'),
     }),
     defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'array',
+      of: [{type: 'block'}],
+      description: 'The fuller write-up shown on the café’s own page.',
+    }),
+    defineField({
       name: 'rating',
       title: 'Rating',
       type: 'number',
