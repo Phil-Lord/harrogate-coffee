@@ -69,8 +69,8 @@ export default async function CoffeeShopPage({ params }: Props) {
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">
           {shop.name}
         </h1>
-        <RatingBadge rating={shop.rating} />
         <PriceBadge level={shop.priceLevel} />
+        <RatingBadge rating={shop.rating} />
       </div>
 
       {shop.shortDescription && (

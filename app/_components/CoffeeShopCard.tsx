@@ -31,9 +31,11 @@ export function CoffeeShopCard({ shop }: { shop: Shop }) {
         <CardContent className="flex flex-1 flex-col gap-2 py-5">
           <div className="flex items-baseline justify-between gap-3">
             <CardTitle className="text-lg">{shop.name}</CardTitle>
-            <RatingBadge rating={shop.rating} />
+            <div className="flex shrink-0 items-center gap-2">
+              <PriceBadge level={shop.priceLevel} />
+              <RatingBadge rating={shop.rating} />
+            </div>
           </div>
-          <PriceBadge level={shop.priceLevel} className="w-fit" />
           {shop.shortDescription && (
             <p className="text-sm leading-6 text-muted-foreground">
               {shop.shortDescription}
