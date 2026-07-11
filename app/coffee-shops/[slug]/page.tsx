@@ -2,8 +2,11 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
 
+import { buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
 import { COFFEE_SHOP_QUERY, COFFEE_SHOP_SLUGS_QUERY } from '@/sanity/lib/queries'
@@ -43,9 +46,10 @@ export default async function CoffeeShopPage({ params }: Props) {
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
       <Link
         href="/"
-        className="mb-8 inline-block text-sm text-zinc-500 transition hover:text-zinc-800 dark:hover:text-zinc-200"
+        className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'mb-8 -ml-3')}
       >
-        ← All coffee shops
+        <ArrowLeft />
+        All coffee shops
       </Link>
 
       {shop.mainImage && (
