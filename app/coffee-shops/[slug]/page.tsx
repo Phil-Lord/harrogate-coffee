@@ -5,11 +5,8 @@ import { notFound } from 'next/navigation'
 
 import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
-import {
-  COFFEE_SHOP_QUERY,
-  COFFEE_SHOP_SLUGS_QUERY,
-  type CoffeeShop,
-} from '@/sanity/lib/queries'
+import { COFFEE_SHOP_QUERY, COFFEE_SHOP_SLUGS_QUERY } from '@/sanity/lib/queries'
+import type { COFFEE_SHOP_QUERY_RESULT } from '@/sanity.types'
 import { priceLabel } from '@/app/_lib/format'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -27,7 +24,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const shop = await client.fetch<CoffeeShop | null>(COFFEE_SHOP_QUERY, { slug })
+  const shop = await client.fetch<COFFEE_SHOP_QUERY_RESULT>(COFFEE_SHOP_QUERY, { slug })
   if (!shop) return {}
   return {
     title: `${shop.name} — Harrogate Coffee Shops`,
@@ -37,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CoffeeShopPage({ params }: Props) {
   const { slug } = await params
-  const shop = await client.fetch<CoffeeShop | null>(COFFEE_SHOP_QUERY, { slug })
+  const shop = await client.fetch<COFFEE_SHOP_QUERY_RESULT>(COFFEE_SHOP_QUERY, { slug })
   if (!shop) notFound()
 
   return (
@@ -53,7 +50,7 @@ export default async function CoffeeShopPage({ params }: Props) {
         <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
           <Image
             src={urlFor(shop.mainImage).width(1200).height(675).fit('crop').auto('format').url()}
-            alt={shop.mainImage.alt ?? shop.name}
+            alt={shop.mainImage.alt ?? shop.name ?? ''}
             fill
             sizes="(min-width: 768px) 768px, 100vw"
             priority

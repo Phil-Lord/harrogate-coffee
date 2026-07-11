@@ -5,10 +5,12 @@ import { Star } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { urlFor } from '@/sanity/lib/image'
-import type { CoffeeShop } from '@/sanity/lib/queries'
+import type { COFFEE_SHOPS_QUERY_RESULT } from '@/sanity.types'
 import { priceLabel } from '@/app/_lib/format'
 
-export function CoffeeShopCard({ shop }: { shop: CoffeeShop }) {
+type Shop = COFFEE_SHOPS_QUERY_RESULT[number]
+
+export function CoffeeShopCard({ shop }: { shop: Shop }) {
   return (
     <Link href={`/coffee-shops/${shop.slug}`} className="group block">
       <Card className="flex-col gap-0 p-0 transition-shadow hover:shadow-lg sm:min-h-44 sm:flex-row">
@@ -16,7 +18,7 @@ export function CoffeeShopCard({ shop }: { shop: CoffeeShop }) {
           {shop.mainImage ? (
             <Image
               src={urlFor(shop.mainImage).width(800).height(600).fit('crop').auto('format').url()}
-              alt={shop.mainImage.alt ?? shop.name}
+              alt={shop.mainImage.alt ?? shop.name ?? ''}
               fill
               sizes="(min-width: 640px) 256px, 100vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
