@@ -3,11 +3,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { Separator } from '@/components/ui/separator'
 import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
 import { COFFEE_SHOP_QUERY, COFFEE_SHOP_SLUGS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOP_QUERY_RESULT } from '@/sanity.types'
 import { PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
+import { RichText } from '@/app/_components/RichText'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -47,7 +49,7 @@ export default async function CoffeeShopPage({ params }: Props) {
       </Link>
 
       {shop.mainImage && (
-        <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
+        <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-muted">
           <Image
             src={urlFor(shop.mainImage).width(1200).height(675).fit('crop').auto('format').url()}
             alt={shop.mainImage.alt ?? shop.name ?? ''}
@@ -60,7 +62,7 @@ export default async function CoffeeShopPage({ params }: Props) {
       )}
 
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
           {shop.name}
         </h1>
         <RatingBadge rating={shop.rating} />
@@ -68,10 +70,17 @@ export default async function CoffeeShopPage({ params }: Props) {
       </div>
 
       {shop.shortDescription && (
-        <p className="mt-4 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+        <p className="mt-4 text-lg leading-8 text-muted-foreground">
           {shop.shortDescription}
         </p>
       )}
+
+      {shop.description?.length ? (
+        <>
+          <Separator className="my-8" />
+          <RichText value={shop.description} />
+        </>
+      ) : null}
     </main>
   )
 }
