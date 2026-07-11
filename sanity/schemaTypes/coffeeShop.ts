@@ -1,11 +1,11 @@
 import {defineField, defineType} from 'sanity'
-import { LuCoffee } from "react-icons/lu";
+import { Coffee } from "lucide-react";
 
 export const coffeeShop = defineType({
   name: 'coffeeShop',
   title: 'Coffee Shop',
   type: 'document',
-  icon: LuCoffee,
+  icon: Coffee,
   fields: [
     defineField({
       name: 'name',
