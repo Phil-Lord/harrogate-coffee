@@ -42,3 +42,7 @@ next-env.d.ts
 
 # sanity typegen — regenerated artifact from `sanity schema extract`
 schema.json
+
+# playwright mcp — throwaway screenshots/snapshots from visual QA sessions
+.playwright-mcp/
+/*.png

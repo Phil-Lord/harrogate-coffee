@@ -33,6 +33,20 @@ pnpm start    # serve the production build
 pnpm lint     # eslint
 ```
 
+## Visual QA (seeing the rendered site)
+
+A Playwright MCP server is configured in `.mcp.json`, so Claude can open the
+running site, screenshot it, and iterate against what actually renders — not
+guess. Workflow: the user runs `pnpm dev` in a separate terminal, then asks
+Claude to take a look (e.g. "screenshot localhost:3000", "check the list on
+mobile"). Claude loads the browser tools on demand. Claude can't keep a dev
+server alive across its own tool calls, so the human owns `pnpm dev`.
+
+**Screenshot after any non-trivial UI change** and confirm it looks right before
+calling it done. Playwright writes throwaway screenshots/snapshots to
+`.playwright-mcp/` (and root `*.png`); both are gitignored — no need to clean up
+by hand.
+
 ## Tech Stack
 
 | Layer | Choice | Why |
