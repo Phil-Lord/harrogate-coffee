@@ -12,7 +12,9 @@ export function SiteHeader() {
   return (
     <>
       {/* Fixed, not sticky: a sticky header rides the elastic overscroll bounce. */}
-      <header className="fixed inset-x-0 top-0 z-50 h-14 border-b border-border bg-muted sm:h-16">
+      {/* Opaque by default; frosted only where backdrop-filter is supported, so
+          the fallback can never leave card text legible through the bar. */}
+      <header className="fixed inset-x-0 top-0 z-50 h-14 border-b border-border bg-muted backdrop-blur-xl supports-[backdrop-filter]:bg-muted/65 sm:h-16">
         <div className="mx-auto flex h-full w-full max-w-3xl items-center px-6">
           <Link
             href="/"
