@@ -52,73 +52,116 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/*
+ * Palette — the raw colours, named after what they look like.
+ * Nothing here says where a colour is used; that's the job of the
+ * semantic tokens below. Change a brew here, it changes everywhere.
+ *
+ * Ordered lightest to darkest. Contrast notes are vs. --cream.
+ */
 :root {
-  --background: oklch(0.982 0.019 75);
-  --foreground: oklch(0.147 0.004 49.3);
-  --card: oklch(0.885 0.037 73);
-  --card-foreground: oklch(0.147 0.004 49.3);
-  --popover: oklch(0.885 0.037 73);
-  --popover-foreground: oklch(0.147 0.004 49.3);
-  --primary: oklch(0.214 0.009 43.1);
-  --primary-foreground: oklch(0.986 0.002 67.8);
-  --secondary: oklch(0.96 0.002 17.2);
-  --secondary-foreground: oklch(0.214 0.009 43.1);
-  --muted: oklch(0.96 0.002 17.2);
-  --muted-foreground: oklch(0.547 0.021 43.1);
-  --accent: oklch(0.96 0.002 17.2);
-  --accent-foreground: oklch(0.214 0.009 43.1);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0.005 34.3);
-  --input: oklch(0.922 0.005 34.3);
-  --ring: oklch(0.714 0.014 41.2);
-  --chart-1: oklch(0.868 0.007 39.5);
-  --chart-2: oklch(0.547 0.021 43.1);
-  --chart-3: oklch(0.438 0.017 39.3);
-  --chart-4: oklch(0.367 0.016 35.7);
-  --chart-5: oklch(0.268 0.011 36.5);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.986 0.002 67.8);
-  --sidebar-foreground: oklch(0.147 0.004 49.3);
-  --sidebar-primary: oklch(0.214 0.009 43.1);
-  --sidebar-primary-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-accent: oklch(0.96 0.002 17.2);
-  --sidebar-accent-foreground: oklch(0.214 0.009 43.1);
-  --sidebar-border: oklch(0.922 0.005 34.3);
-  --sidebar-ring: oklch(0.714 0.014 41.2);
+  /* Warm neutrals: cream through espresso */
+  --cream: #fff9ed; /* page background */
+  --cream-deep: #faf1de; /* raised/hover surface, image placeholders */
+  --latte: #f1e1ca; /* cards */
+  --oat: #e6d2b6; /* borders, dividers */
+  --tan: #dab797; /* chips, stronger borders, decorative icons */
+  --caramel: #a67c52; /* icons + large text only — 3.6:1, fails AA for body */
+  --mocha: #906a43; /* smallest brown safe for body text — 4.6:1 */
+  --coffee: #6b4e31; /* secondary/muted text — 7.3:1 */
+  --espresso: #3d2c1e; /* headings */
+  --espresso-ink: #2e2118; /* body text — 14.9:1 */
+
+  /* Green: warm and herbal, the one non-brown. Shares the browns' yellow lean
+   * so it reads as part of the family rather than a bolt-on. */
+  --sage-wash: #e9efe1; /* tinted green surface */
+  --sage: #8aa77a; /* muted green, decorative */
+  --moss: #587547; /* buttons — 5.2:1 with white */
+  --moss-deep: #46603a; /* button hover, green text on cream — 6.7:1 */
 }
 
+/*
+ * Semantic tokens — what each colour *means*. Components only ever touch
+ * these (bg-card, text-muted-foreground, ...), never the palette directly.
+ */
+:root {
+  --background: var(--cream);
+  --foreground: var(--espresso-ink);
+  --card: var(--latte);
+  --card-foreground: var(--espresso-ink);
+  --popover: var(--cream-deep);
+  --popover-foreground: var(--espresso-ink);
+
+  /* Green carries every primary action: buttons, rating badges, focus rings. */
+  --primary: var(--moss);
+  --primary-foreground: var(--cream);
+
+  --secondary: var(--tan);
+  --secondary-foreground: var(--espresso);
+  --muted: var(--cream-deep);
+  --muted-foreground: var(--coffee);
+  --accent: var(--sage-wash);
+  --accent-foreground: var(--moss-deep);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--oat);
+  --input: var(--oat);
+  --ring: var(--moss);
+
+  --chart-1: var(--moss);
+  --chart-2: var(--caramel);
+  --chart-3: var(--tan);
+  --chart-4: var(--coffee);
+  --chart-5: var(--sage);
+  --radius: 0.625rem;
+
+  --sidebar: var(--cream-deep);
+  --sidebar-foreground: var(--espresso-ink);
+  --sidebar-primary: var(--moss);
+  --sidebar-primary-foreground: var(--cream);
+  --sidebar-accent: var(--latte);
+  --sidebar-accent-foreground: var(--espresso);
+  --sidebar-border: var(--oat);
+  --sidebar-ring: var(--moss);
+}
+
+/*
+ * Dark theme. Nothing applies the `dark` class today (no toggle), so this is
+ * dormant — kept mapped to the same palette so it can't drift out of step.
+ * The stack inverts: espresso surfaces, cream text, greens lifted to stay
+ * legible on dark.
+ */
 .dark {
-  --background: oklch(0.147 0.004 49.3);
-  --foreground: oklch(0.986 0.002 67.8);
-  --card: oklch(0.214 0.009 43.1);
-  --card-foreground: oklch(0.986 0.002 67.8);
-  --popover: oklch(0.214 0.009 43.1);
-  --popover-foreground: oklch(0.986 0.002 67.8);
-  --primary: oklch(0.922 0.005 34.3);
-  --primary-foreground: oklch(0.214 0.009 43.1);
-  --secondary: oklch(0.268 0.011 36.5);
-  --secondary-foreground: oklch(0.986 0.002 67.8);
-  --muted: oklch(0.268 0.011 36.5);
-  --muted-foreground: oklch(0.714 0.014 41.2);
-  --accent: oklch(0.268 0.011 36.5);
-  --accent-foreground: oklch(0.986 0.002 67.8);
+  --background: var(--espresso-ink);
+  --foreground: var(--cream);
+  --card: var(--espresso);
+  --card-foreground: var(--cream);
+  --popover: var(--espresso);
+  --popover-foreground: var(--cream);
+  --primary: var(--sage);
+  --primary-foreground: var(--espresso-ink);
+  --secondary: var(--coffee);
+  --secondary-foreground: var(--cream);
+  --muted: var(--espresso);
+  --muted-foreground: var(--tan);
+  --accent: var(--coffee);
+  --accent-foreground: var(--cream);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.547 0.021 43.1);
-  --chart-1: oklch(0.868 0.007 39.5);
-  --chart-2: oklch(0.547 0.021 43.1);
-  --chart-3: oklch(0.438 0.017 39.3);
-  --chart-4: oklch(0.367 0.016 35.7);
-  --chart-5: oklch(0.268 0.011 36.5);
-  --sidebar: oklch(0.214 0.009 43.1);
-  --sidebar-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-accent: oklch(0.268 0.011 36.5);
-  --sidebar-accent-foreground: oklch(0.986 0.002 67.8);
+  --ring: var(--sage);
+  --chart-1: var(--sage);
+  --chart-2: var(--tan);
+  --chart-3: var(--caramel);
+  --chart-4: var(--latte);
+  --chart-5: var(--moss);
+  --sidebar: var(--espresso);
+  --sidebar-foreground: var(--cream);
+  --sidebar-primary: var(--sage);
+  --sidebar-primary-foreground: var(--espresso-ink);
+  --sidebar-accent: var(--coffee);
+  --sidebar-accent-foreground: var(--cream);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.547 0.021 43.1);
+  --sidebar-ring: var(--sage);
 }
 
 @layer base {
