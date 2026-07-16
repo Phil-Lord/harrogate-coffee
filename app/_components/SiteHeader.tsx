@@ -15,7 +15,7 @@ export function SiteHeader() {
       {/* Opaque by default; frosted only where backdrop-filter is supported, so
           the fallback can never leave card text legible through the bar. */}
       <header className="fixed inset-x-0 top-0 z-50 h-14 border-b border-border bg-muted backdrop-blur-xl supports-[backdrop-filter]:bg-muted/65 sm:h-16">
-        <div className="mx-auto flex h-full w-full max-w-3xl items-center px-6">
+        <div className="mr-auto flex h-full w-full max-w-4xl items-center px-8 sm:px-20">
           <Link
             href="/"
             className="flex items-center gap-2.5 rounded-md transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"

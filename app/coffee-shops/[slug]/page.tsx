@@ -43,7 +43,7 @@ export default async function CoffeeShopPage({ params }: Props) {
   if (!shop) notFound()
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
+    <main className="mr-auto w-full max-w-5xl flex-1 px-6 py-12 sm:px-18">
       <Link
         href="/"
         className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'mb-8 -ml-3')}
