@@ -197,7 +197,7 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: COFFEE_SHOPS_QUERY
-// Query: *[_type == "coffeeShop" && defined(slug.current)]  | order(rating desc, name asc) {    _id,    name,    "slug": slug.current,    shortDescription,    rating,    priceLevel,    mainImage  }
+// Query: *[_type == "coffeeShop" && defined(slug.current)]  | order(rating desc, name asc) {    _id,    name,    "slug": slug.current,    shortDescription,    rating,    priceLevel,    mainImage{ ..., "lqip": asset->metadata.lqip }  }
 export type COFFEE_SHOPS_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
@@ -212,6 +212,7 @@ export type COFFEE_SHOPS_QUERY_RESULT = Array<{
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
+    lqip: string | null;
   } | null;
 }>;
 
@@ -224,7 +225,7 @@ export type COFFEE_SHOP_SLUGS_QUERY_RESULT = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: COFFEE_SHOP_QUERY
-// Query: *[_type == "coffeeShop" && slug.current == $slug][0]{    _id,    name,    "slug": slug.current,    shortDescription,    rating,    priceLevel,    mainImage,    description  }
+// Query: *[_type == "coffeeShop" && slug.current == $slug][0]{    _id,    name,    "slug": slug.current,    shortDescription,    rating,    priceLevel,    mainImage{ ..., "lqip": asset->metadata.lqip },    description  }
 export type COFFEE_SHOP_QUERY_RESULT = {
   _id: string;
   name: string | null;
@@ -239,6 +240,7 @@ export type COFFEE_SHOP_QUERY_RESULT = {
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
+    lqip: string | null;
   } | null;
   description: Array<{
     children?: Array<{

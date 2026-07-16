@@ -60,6 +60,8 @@ export default async function CoffeeShopPage({ params }: Props) {
             fill
             sizes="(min-width: 768px) 768px, 100vw"
             priority
+            placeholder={shop.mainImage.lqip ? 'blur' : 'empty'}
+            blurDataURL={shop.mainImage.lqip ?? undefined}
             className="object-cover"
           />
         </div>

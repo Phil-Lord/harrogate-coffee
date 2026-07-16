@@ -8,7 +8,10 @@ import { PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
 
 type Shop = COFFEE_SHOPS_QUERY_RESULT[number]
 
-export function CoffeeShopCard({ shop }: { shop: Shop }) {
+// `priority` is set for the cards above the fold: it opts them out of lazy
+// loading, so the browser fetches them from the initial HTML rather than
+// waiting for layout.
+export function CoffeeShopCard({ shop, priority = false }: { shop: Shop; priority?: boolean }) {
   return (
     <Link href={`/coffee-shops/${shop.slug}`} className="group block">
       <Card className="flex-col gap-0 p-0 transition-shadow hover:shadow-lg sm:min-h-44 sm:flex-row">
@@ -19,6 +22,9 @@ export function CoffeeShopCard({ shop }: { shop: Shop }) {
               alt={shop.mainImage.alt ?? shop.name ?? ''}
               fill
               sizes="(min-width: 640px) 256px, 100vw"
+              priority={priority}
+              placeholder={shop.mainImage.lqip ? 'blur' : 'empty'}
+              blurDataURL={shop.mainImage.lqip ?? undefined}
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (

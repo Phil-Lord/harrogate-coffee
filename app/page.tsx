@@ -23,9 +23,9 @@ export default async function Home() {
         </p>
       ) : (
         <ul className="flex flex-col gap-4">
-          {shops.map((shop) => (
+          {shops.map((shop, index) => (
             <li key={shop._id}>
-              <CoffeeShopCard shop={shop} />
+              <CoffeeShopCard shop={shop} priority={index < 3} />
             </li>
           ))}
         </ul>

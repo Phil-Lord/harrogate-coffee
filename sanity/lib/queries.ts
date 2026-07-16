@@ -13,7 +13,7 @@ export const COFFEE_SHOPS_QUERY = defineQuery(/* groq */ `
     shortDescription,
     rating,
     priceLevel,
-    mainImage
+    mainImage{ ..., "lqip": asset->metadata.lqip }
   }
 `)
 
@@ -31,7 +31,7 @@ export const COFFEE_SHOP_QUERY = defineQuery(/* groq */ `
     shortDescription,
     rating,
     priceLevel,
-    mainImage,
+    mainImage{ ..., "lqip": asset->metadata.lqip },
     description
   }
 `)
