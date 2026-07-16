@@ -12,13 +12,7 @@ export default async function Home() {
   const shops = await client.fetch<COFFEE_SHOPS_QUERY_RESULT>(COFFEE_SHOPS_QUERY)
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
-      <header className="mb-8 flex flex-col gap-2">
-        <h1 className="font-heading text-4xl font-semibold tracking-tight">
-          Harrogate Coffee Shops
-        </h1>
-      </header>
-
+    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
       {shops.length === 0 ? (
         <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">
           No coffee shops yet — add some in the{' '}
