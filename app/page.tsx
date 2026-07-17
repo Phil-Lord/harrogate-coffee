@@ -4,7 +4,6 @@ import { client } from '@/sanity/lib/client'
 import { COFFEE_SHOPS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOPS_QUERY_RESULT } from '@/sanity.types'
 import { CoffeeShopCard } from '@/app/_components/CoffeeShopCard'
-import { WillowDecoration } from '@/app/_components/WillowDecoration'
 
 // Statically generated, refreshed at most hourly (ISR).
 export const revalidate = 3600
