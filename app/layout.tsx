@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist_Mono, Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { SiteHeader } from "@/app/_components/SiteHeader";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -32,8 +31,7 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", geistMono.variable, "font-sans", inter.variable, merriweather.variable)}
     >
-      <body className="min-h-full flex flex-col">
-        <SiteHeader />
+      <body>
         {children}
       </body>
     </html>
