@@ -1,6 +1,8 @@
 import {defineField, defineType} from 'sanity'
 import { Coffee } from "lucide-react";
 
+import {overallRating} from '@/sanity/lib/rating'
+
 export const coffeeShop = defineType({
   name: 'coffeeShop',
   title: 'Coffee Shop',
@@ -37,18 +39,36 @@ export const coffeeShop = defineType({
       description: 'The fuller write-up shown on the café’s own page.',
     }),
     defineField({
-      name: 'rating',
-      title: 'Rating',
-      type: 'number',
-      description: 'Our rating out of 10.',
-      validation: (rule) => rule.required().min(1).max(10),
-    }),
-    defineField({
-      name: 'priceLevel',
-      title: 'Price level',
-      type: 'number',
-      description: 'How pricey, 1 (cheap) to 10 (expensive).',
-      validation: (rule) => rule.required().min(1).max(10),
+      name: 'scores',
+      title: 'Scores',
+      type: 'object',
+      description:
+        'Score each category out of 10, where 10 is always best. The overall rating shown on the site is the average of the three.',
+      options: {columns: 3},
+      validation: (rule) => rule.required(),
+      fields: [
+        defineField({
+          name: 'vibe',
+          title: 'Vibe',
+          type: 'number',
+          description: 'Atmosphere, décor, welcome. 1 (grim) to 10 (lovely).',
+          validation: (rule) => rule.required().min(1).max(10),
+        }),
+        defineField({
+          name: 'coffee',
+          title: 'Coffee',
+          type: 'number',
+          description: 'The coffee itself. 1 (undrinkable) to 10 (superb).',
+          validation: (rule) => rule.required().min(1).max(10),
+        }),
+        defineField({
+          name: 'affordability',
+          title: 'Affordability',
+          type: 'number',
+          description: 'Judge the prices alone, not value for money, 1 (priciest) to 10 (cheapest).',
+          validation: (rule) => rule.required().min(1).max(10),
+        }),
+      ],
     }),
     defineField({
       name: 'mainImage',
@@ -67,11 +87,18 @@ export const coffeeShop = defineType({
     }),
   ],
   preview: {
-    select: {title: 'name', subtitle: 'rating', media: 'mainImage'},
-    prepare({title, subtitle, media}) {
+    select: {
+      title: 'name',
+      vibe: 'scores.vibe',
+      coffee: 'scores.coffee',
+      affordability: 'scores.affordability',
+      media: 'mainImage',
+    },
+    prepare({title, vibe, coffee, affordability, media}) {
+      const rating = overallRating({vibe, coffee, affordability})
       return {
         title,
-        subtitle: subtitle ? `Rated ${subtitle}/10` : 'No rating yet',
+        subtitle: rating === null ? 'Not scored yet' : `Rated ${rating}/10`,
         media,
       }
     },

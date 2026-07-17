@@ -14,13 +14,13 @@ export function RatingBadge({ rating }: { rating: number | null }) {
 }
 
 export function PriceBadge({
-  level,
+  affordability,
   className,
 }: {
-  level: number | null
+  affordability: number | null
   className?: string
 }) {
-  const label = priceLabel(level)
+  const label = priceLabel(affordability)
   if (!label) return null
   return (
     <Badge variant="secondary" className={className}>

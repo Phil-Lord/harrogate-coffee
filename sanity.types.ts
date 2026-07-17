@@ -49,8 +49,11 @@ export type CoffeeShop = {
     _type: "block";
     _key: string;
   }>;
-  rating?: number;
-  priceLevel?: number;
+  scores?: {
+    vibe?: number;
+    coffee?: number;
+    affordability?: number;
+  };
   mainImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -197,14 +200,14 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: COFFEE_SHOPS_QUERY
-// Query: *[_type == "coffeeShop" && defined(slug.current)]  | order(rating desc, name asc) {    _id,    name,    "slug": slug.current,    shortDescription,    rating,    priceLevel,    mainImage{ ..., "lqip": asset->metadata.lqip }  }
+// Query: *[_type == "coffeeShop" && defined(slug.current)]  | order((scores.vibe + scores.coffee + scores.affordability) desc, name asc) {    _id,    name,    "slug": slug.current,    shortDescription,    "rating": select(    defined(scores.vibe) && defined(scores.coffee) && defined(scores.affordability) =>      round(math::avg([scores.vibe, scores.coffee, scores.affordability]), 1),    null  ),    "affordability": scores.affordability,    mainImage{ ..., "lqip": asset->metadata.lqip }  }
 export type COFFEE_SHOPS_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
   slug: string | null;
   shortDescription: string | null;
   rating: number | null;
-  priceLevel: number | null;
+  affordability: number | null;
   mainImage: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -225,14 +228,14 @@ export type COFFEE_SHOP_SLUGS_QUERY_RESULT = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: COFFEE_SHOP_QUERY
-// Query: *[_type == "coffeeShop" && slug.current == $slug][0]{    _id,    name,    "slug": slug.current,    shortDescription,    rating,    priceLevel,    mainImage{ ..., "lqip": asset->metadata.lqip },    description  }
+// Query: *[_type == "coffeeShop" && slug.current == $slug][0]{    _id,    name,    "slug": slug.current,    shortDescription,    "rating": select(    defined(scores.vibe) && defined(scores.coffee) && defined(scores.affordability) =>      round(math::avg([scores.vibe, scores.coffee, scores.affordability]), 1),    null  ),    "affordability": scores.affordability,    mainImage{ ..., "lqip": asset->metadata.lqip },    description  }
 export type COFFEE_SHOP_QUERY_RESULT = {
   _id: string;
   name: string | null;
   slug: string | null;
   shortDescription: string | null;
   rating: number | null;
-  priceLevel: number | null;
+  affordability: number | null;
   mainImage: {
     asset?: SanityImageAssetReference;
     media?: unknown;

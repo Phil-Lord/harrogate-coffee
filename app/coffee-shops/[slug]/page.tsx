@@ -71,7 +71,7 @@ export default async function CoffeeShopPage({ params }: Props) {
         <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
           {shop.name}
         </h1>
-        <PriceBadge level={shop.priceLevel} />
+        <PriceBadge affordability={shop.affordability} />
         <RatingBadge rating={shop.rating} />
       </div>
 

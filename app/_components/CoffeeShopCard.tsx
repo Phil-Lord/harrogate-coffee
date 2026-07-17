@@ -38,7 +38,7 @@ export function CoffeeShopCard({ shop, priority = false }: { shop: Shop; priorit
           <div className="flex items-baseline justify-between gap-3">
             <CardTitle className="text-lg">{shop.name}</CardTitle>
             <div className="flex shrink-0 items-center gap-2">
-              <PriceBadge level={shop.priceLevel} />
+              <PriceBadge affordability={shop.affordability} />
               <RatingBadge rating={shop.rating} />
             </div>
           </div>
