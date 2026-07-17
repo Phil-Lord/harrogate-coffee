@@ -71,6 +71,32 @@ export const coffeeShop = defineType({
       ],
     }),
     defineField({
+      name: 'dogFriendly',
+      title: 'Dog friendly',
+      type: 'string',
+      description: 'Leave blank if we haven’t checked; the site shows nothing rather than guessing.',
+      options: {
+        list: [
+          {title: 'Yes', value: 'yes'},
+          {title: 'No', value: 'no'},
+        ],
+        layout: 'radio',
+      },
+    }),
+    defineField({
+      name: 'ownership',
+      title: 'Chain or independent',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Independent', value: 'independent'},
+          {title: 'Chain', value: 'chain'},
+        ],
+        layout: 'radio',
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'mainImage',
       title: 'Main image',
       type: 'image',

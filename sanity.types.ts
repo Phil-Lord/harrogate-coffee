@@ -54,6 +54,8 @@ export type CoffeeShop = {
     coffee?: number;
     affordability?: number;
   };
+  dogFriendly?: "yes" | "no";
+  ownership?: "independent" | "chain";
   mainImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
