@@ -11,7 +11,7 @@ import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
 import { COFFEE_SHOP_QUERY, COFFEE_SHOP_SLUGS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOP_QUERY_RESULT } from '@/sanity.types'
-import { DogFriendlyBadge, PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
+import { DogFriendlyBadge, OwnershipBadge, PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
 import { RichText } from '@/app/_components/RichText'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -74,6 +74,7 @@ export default async function CoffeeShopPage({ params }: Props) {
         <PriceBadge affordability={shop.affordability} />
         <RatingBadge rating={shop.rating} />
         <DogFriendlyBadge dogFriendly={shop.dogFriendly} />
+        <OwnershipBadge ownership={shop.ownership} />
       </div>
 
       {shop.shortDescription && (

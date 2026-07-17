@@ -30,6 +30,7 @@ export const COFFEE_SHOPS_QUERY = defineQuery(/* groq */ `
     "rating": ${RATING},
     "affordability": scores.affordability,
     dogFriendly,
+    ownership,
     mainImage{ ..., "lqip": asset->metadata.lqip }
   }
 `)
@@ -49,6 +50,7 @@ export const COFFEE_SHOP_QUERY = defineQuery(/* groq */ `
     "rating": ${RATING},
     "affordability": scores.affordability,
     dogFriendly,
+    ownership,
     mainImage{ ..., "lqip": asset->metadata.lqip },
     description
   }

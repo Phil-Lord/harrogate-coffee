@@ -1,4 +1,4 @@
-import { Dog, Star } from 'lucide-react'
+import { Building2, Dog, Star, Store } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { priceLabel } from '@/app/_lib/format'
@@ -30,6 +30,38 @@ export function DogFriendlyBadge({
       Dog friendly
     </Badge>
   )
+}
+
+export function OwnershipBadge({
+  ownership,
+  className,
+}: {
+  ownership: string | null
+  className?: string
+}) {
+  if (ownership === 'independent') {
+    return (
+      <Badge
+        variant="secondary"
+        className={`gap-1 bg-accent text-accent-foreground ${className ?? ''}`}
+      >
+        <Store className="size-3.5" />
+        Independent
+      </Badge>
+    )
+  }
+  if (ownership === 'chain') {
+    return (
+      <Badge
+        variant="secondary"
+        className={`gap-1 bg-muted text-muted-foreground ${className ?? ''}`}
+      >
+        <Building2 className="size-3.5" />
+        Chain
+      </Badge>
+    )
+  }
+  return null
 }
 
 export function PriceBadge({
