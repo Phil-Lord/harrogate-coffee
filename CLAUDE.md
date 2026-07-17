@@ -43,9 +43,14 @@ mobile"). Claude loads the browser tools on demand. Claude can't keep a dev
 server alive across its own tool calls, so the human owns `pnpm dev`.
 
 **Screenshot after any non-trivial UI change** and confirm it looks right before
-calling it done. Playwright writes throwaway screenshots/snapshots to
-`.playwright-mcp/` (and root `*.png`); both are gitignored — no need to clean up
-by hand.
+calling it done.
+
+All Playwright output (screenshots, snapshots, console logs) belongs in
+`.playwright-mcp/`, which is gitignored and size-capped so old files are evicted
+automatically — no need to clean up by hand. `--output-dir` in `.mcp.json`
+enforces this, but **only for bare filenames**: pass `name: "mobile.png"`, never
+a path or a leading `/`, or the file escapes into the project root and makes a
+mess.
 
 ## Tech Stack
 
