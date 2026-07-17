@@ -46,7 +46,3 @@ schema.json
 # playwright mcp — throwaway screenshots/snapshots from visual QA sessions
 .playwright-mcp/
 /*.png
-
-# placeholder artwork — Pngtree free tier, personal use only. Kept out of git so
-# it can't reach Vercel. Delete this line once a licensed asset replaces it.
-/public/willow-placeholder.png
