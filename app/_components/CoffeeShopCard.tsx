@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { urlFor } from '@/sanity/lib/image'
 import type { COFFEE_SHOPS_QUERY_RESULT } from '@/sanity.types'
-import { PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
+import { DogFriendlyBadge, PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
 
 type Shop = COFFEE_SHOPS_QUERY_RESULT[number]
 
@@ -38,6 +38,7 @@ export function CoffeeShopCard({ shop, priority = false }: { shop: Shop; priorit
           <div className="flex items-baseline justify-between gap-3">
             <CardTitle className="text-lg">{shop.name}</CardTitle>
             <div className="flex shrink-0 items-center gap-2">
+              <DogFriendlyBadge dogFriendly={shop.dogFriendly} />
               <PriceBadge affordability={shop.affordability} />
               <RatingBadge rating={shop.rating} />
             </div>
