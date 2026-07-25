@@ -38,11 +38,32 @@ export function ShopFilterBar({
         <Button size="sm" variant="secondary" className={cn(barButton, 'ml-auto')} onClick={onToggleSort}>
           {sort === 'rating' ? <Star className="fill-current" /> : <CirclePoundSterling />}
           <span className="sr-only">Sort by: </span>
-          <span className="sm:hidden">{sort === 'rating' ? 'Rating' : 'Value'}</span>
-          <span className="hidden sm:inline">{sort === 'rating' ? 'Top rated' : 'Best value'}</span>
+          <SortLabel active={sort} rating="Rating" value="Value" className="sm:hidden" />
+          <SortLabel active={sort} rating="Top rated" value="Best value" className="hidden sm:grid" />
         </Button>
       </div>
     </FixedBar>
+  )
+}
+
+// Both labels share one grid cell, so the button is always as wide as
+// the longer of the two and doesn't jump when the sort flips.
+function SortLabel({
+  active,
+  rating,
+  value,
+  className,
+}: {
+  active: ShopSort
+  rating: string
+  value: string
+  className?: string
+}) {
+  return (
+    <span className={cn('grid', className)}>
+      <span className={cn('col-start-1 row-start-1', active !== 'rating' && 'invisible')}>{rating}</span>
+      <span className={cn('col-start-1 row-start-1', active !== 'value' && 'invisible')}>{value}</span>
+    </span>
   )
 }
 
