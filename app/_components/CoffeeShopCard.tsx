@@ -3,14 +3,9 @@ import Link from 'next/link'
 
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { urlFor } from '@/sanity/lib/image'
-import type { COFFEE_SHOPS_QUERY_RESULT } from '@/sanity.types'
-import { DogFriendlyBadge, OwnershipBadge, PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
+import { ShopBadgeRow } from '@/app/_components/ShopBadges'
+import type { Shop } from '@/app/_lib/shop'
 
-type Shop = COFFEE_SHOPS_QUERY_RESULT[number]
-
-// `priority` is set for the cards above the fold: it opts them out of lazy
-// loading, so the browser fetches them from the initial HTML rather than
-// waiting for layout.
 export function CoffeeShopCard({ shop, priority = false }: { shop: Shop; priority?: boolean }) {
   return (
     <Link href={`/coffee-shops/${shop.slug}`} className="group block">
@@ -37,12 +32,7 @@ export function CoffeeShopCard({ shop, priority = false }: { shop: Shop; priorit
         <CardContent className="flex flex-1 flex-col gap-2 py-5">
           <div className="flex items-baseline justify-between gap-3">
             <CardTitle className="text-lg">{shop.name}</CardTitle>
-            <div className="flex shrink-0 items-center gap-2">
-              <OwnershipBadge ownership={shop.ownership} />
-              <DogFriendlyBadge dogFriendly={shop.dogFriendly} />
-              <PriceBadge affordability={shop.affordability} />
-              <RatingBadge rating={shop.rating} />
-            </div>
+            <ShopBadgeRow shop={shop} className="shrink-0" />
           </div>
           {shop.shortDescription && (
             <p className="text-sm leading-6 text-muted-foreground">
