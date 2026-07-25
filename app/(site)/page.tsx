@@ -1,8 +1,10 @@
 import Link from 'next/link'
 
+import { cn } from '@/lib/utils'
 import { client } from '@/sanity/lib/client'
 import { COFFEE_SHOPS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOPS_QUERY_RESULT } from '@/sanity.types'
+import { EmptyState } from '@/app/_components/EmptyState'
 import { pageContainer } from '@/app/_lib/layout'
 
 // Statically generated, refreshed at most hourly (ISR).
@@ -14,13 +16,13 @@ export default async function Home() {
   return (
     <main className={cn(pageContainer, 'flex-1 py-12')}>
       {shops.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">
+        <EmptyState>
           No coffee shops yet — add some in the{' '}
           <Link href="/studio" className="underline">
             Studio
           </Link>
           .
-        </p>
+        </EmptyState>
       ) : (
         <ul className="flex flex-col gap-4">
           {shops.map((shop, index) => (
