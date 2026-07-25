@@ -5,6 +5,7 @@ import { client } from '@/sanity/lib/client'
 import { COFFEE_SHOPS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOPS_QUERY_RESULT } from '@/sanity.types'
 import { EmptyState } from '@/app/_components/EmptyState'
+import { ShopBrowser } from '@/app/_components/ShopBrowser'
 import { pageContainer } from '@/app/_lib/layout'
 
 // Statically generated, refreshed at most hourly (ISR).
@@ -24,13 +25,7 @@ export default async function Home() {
           .
         </EmptyState>
       ) : (
-        <ul className="flex flex-col gap-4">
-          {shops.map((shop, index) => (
-            <li key={shop._id}>
-              <CoffeeShopCard shop={shop} priority={index < 3} />
-            </li>
-          ))}
-        </ul>
+        <ShopBrowser shops={shops} />
       )}
     </main>
   )
