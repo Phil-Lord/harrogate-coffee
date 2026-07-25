@@ -87,6 +87,44 @@ mess.
 - **Store lat/long from day one** — via Sanity's native `geopoint`, even though
   distance sorting comes later. Avoids re-editing every entry.
 
+## Code Conventions
+
+Small site, so the rule is simple: **the second copy is the bug.** Duplicated
+class strings and duplicated domain rules are what actually rot this codebase —
+they drift silently and nothing fails.
+
+- **One source per shared value.** Before writing a class string, a magic
+  number, or a schema value, check whether it already exists:
+  - Layout rhythm → `pageContainer` in `app/_lib/layout.ts`. Never hand-roll
+    `max-w-* px-*` on a page or a bar; everything full-width must line up with
+    the cards.
+  - Fixed-bar heights → `--header-h` / `--filter-bar-h` in `globals.css`. A bar
+    positioned under another bar reads the variable; it never repeats the number.
+  - Shop facts (`ownership === 'independent'`, `dogFriendly === 'yes'`) →
+    predicates in `app/_lib/shop.ts`. Those strings live in the Sanity schema and
+    nowhere else in the app.
+- **Use the generated types.** TypeGen narrows fields to unions
+  (`"chain" | "independent" | null`). Type props as `Shop['ownership']`, never
+  widen to `string | null`.
+- **Split state from chrome from logic.** A client component that filters a list
+  owns state and composes; the bar is presentational and controlled by props;
+  the predicates and comparators are pure functions in `app/_lib/`, testable
+  without React. `ShopBrowser` / `ShopFilterBar` / `ShopList` / `shop.ts` is the
+  shape to copy.
+- **`cn()` from `@/lib/utils`** for conditional classes — never template strings
+  with `?? ''`.
+- **Don't export what nothing imports.** Sub-components stay private to their
+  file until a second caller appears (see `ShopBadges.tsx`).
+- **Name magic numbers** (`ABOVE_THE_FOLD`) so they don't need a comment.
+- **Comments are the exception, not the habit.** Write one only where the code
+  can't say it itself: a non-obvious *why*, a constraint, a gotcha that would
+  bite the next person. One line, two at the outside. No docblocks restating a
+  signature, no narrating what the line below plainly does. If deleting the
+  comment loses nothing, it should never have been written.
+
+Extract on the second use, not in anticipation of one — a wrapper with a single
+caller is the other failure mode.
+
 ## Data Model
 
 A single `coffeeShop` Sanity document drives both views. The **landing list**
