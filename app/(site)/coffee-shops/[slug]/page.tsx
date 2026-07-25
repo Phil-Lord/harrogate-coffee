@@ -11,8 +11,9 @@ import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
 import { COFFEE_SHOP_QUERY, COFFEE_SHOP_SLUGS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOP_QUERY_RESULT } from '@/sanity.types'
-import { DogFriendlyBadge, OwnershipBadge, PriceBadge, RatingBadge } from '@/app/_components/ShopBadges'
+import { ShopBadgeRow } from '@/app/_components/ShopBadges'
 import { RichText } from '@/app/_components/RichText'
+import { pageContainer } from '@/app/_lib/layout'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -43,7 +44,7 @@ export default async function CoffeeShopPage({ params }: Props) {
   if (!shop) notFound()
 
   return (
-    <main className="mr-auto w-full max-w-5xl flex-1 px-6 py-12 sm:px-18">
+    <main className={cn(pageContainer, 'flex-1 py-12')}>
       <Link
         href="/"
         className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'mb-8 -ml-3')}
@@ -71,10 +72,7 @@ export default async function CoffeeShopPage({ params }: Props) {
         <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
           {shop.name}
         </h1>
-        <PriceBadge affordability={shop.affordability} />
-        <RatingBadge rating={shop.rating} />
-        <DogFriendlyBadge dogFriendly={shop.dogFriendly} />
-        <OwnershipBadge ownership={shop.ownership} />
+        <ShopBadgeRow shop={shop} className="flex-wrap gap-3" />
       </div>
 
       {shop.shortDescription && (

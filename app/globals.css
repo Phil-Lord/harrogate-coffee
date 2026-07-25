@@ -52,6 +52,19 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Heights of the fixed bars: each one below stacks against the height above. */
+:root {
+  --header-h: 3.5rem;
+  --filter-bar-h: 3.25rem;
+}
+
+@media (width >= 40rem) {
+  :root {
+    --header-h: 4rem;
+    --filter-bar-h: 3.5rem;
+  }
+}
+
 /*
  * Palette — the raw colours, named after what they look like.
  * Nothing here says where a colour is used; that's the job of the
