@@ -33,6 +33,16 @@ pnpm start    # serve the production build
 pnpm lint     # eslint
 ```
 
+**Never run a plain `pnpm build` while the human's `pnpm dev` is running** — it
+writes to the same `.next` and leaves dev serving stale CSS from a URL whose
+hash doesn't change, so a browser reload won't clear it either. Build somewhere
+else instead:
+
+```bash
+NEXT_DIST_DIR=.next-build pnpm build
+NEXT_DIST_DIR=.next-build pnpm start -p 3100   # to screenshot the real build
+```
+
 ## Visual QA (seeing the rendered site)
 
 A Playwright MCP server is configured in `.mcp.json`, so Claude can open the
