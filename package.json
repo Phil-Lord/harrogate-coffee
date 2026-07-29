@@ -8,13 +8,13 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "typegen": "sanity schema extract && sanity typegen generate"
+    "studio": "pnpm --filter harrogate-coffee-studio dev",
+    "studio:deploy": "pnpm --filter harrogate-coffee-studio run deploy",
+    "typegen": "pnpm --filter harrogate-coffee-studio typegen"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
-    "@sanity/icons": "^5.0.0",
     "@sanity/image-url": "2",
-    "@sanity/vision": "^5.31.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.24.0",
@@ -22,9 +22,7 @@
     "next-sanity": "13",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "sanity": "^5.31.1",
     "shadcn": "^4.13.0",
-    "styled-components": "6",
     "tailwind-merge": "^3.6.0",
     "tw-animate-css": "^1.4.0"
   },

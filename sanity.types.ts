@@ -200,7 +200,7 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-// Source: sanity/lib/queries.ts
+// Source: ../sanity/lib/queries.ts
 // Variable: COFFEE_SHOPS_QUERY
 // Query: *[_type == "coffeeShop" && defined(slug.current)]  | order((scores.vibe + scores.coffee + scores.affordability) desc, name asc) {    _id,    name,    "slug": slug.current,    shortDescription,    "rating": select(    defined(scores.vibe) && defined(scores.coffee) && defined(scores.affordability) =>      round(math::avg([scores.vibe, scores.coffee, scores.affordability]), 1),    null  ),    "affordability": scores.affordability,    dogFriendly,    ownership,    mainImage{ ..., "lqip": asset->metadata.lqip }  }
 export type COFFEE_SHOPS_QUERY_RESULT = Array<{
@@ -223,14 +223,14 @@ export type COFFEE_SHOPS_QUERY_RESULT = Array<{
   } | null;
 }>;
 
-// Source: sanity/lib/queries.ts
+// Source: ../sanity/lib/queries.ts
 // Variable: COFFEE_SHOP_SLUGS_QUERY
 // Query: *[_type == "coffeeShop" && defined(slug.current)]{ "slug": slug.current }
 export type COFFEE_SHOP_SLUGS_QUERY_RESULT = Array<{
   slug: string | null;
 }>;
 
-// Source: sanity/lib/queries.ts
+// Source: ../sanity/lib/queries.ts
 // Variable: COFFEE_SHOP_QUERY
 // Query: *[_type == "coffeeShop" && slug.current == $slug][0]{    _id,    name,    "slug": slug.current,    shortDescription,    "rating": select(    defined(scores.vibe) && defined(scores.coffee) && defined(scores.affordability) =>      round(math::avg([scores.vibe, scores.coffee, scores.affordability]), 1),    null  ),    "affordability": scores.affordability,    dogFriendly,    ownership,    mainImage{ ..., "lqip": asset->metadata.lqip },    description  }
 export type COFFEE_SHOP_QUERY_RESULT = {
