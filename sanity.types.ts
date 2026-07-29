@@ -31,24 +31,37 @@ export type CoffeeShop = {
   name?: string;
   slug?: Slug;
   shortDescription?: string;
-  description?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  description?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?:
+          "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        _type: "inlineImage";
+        _key: string;
+      }
+  >;
   scores?: {
     vibe?: number;
     coffee?: number;
@@ -232,7 +245,7 @@ export type COFFEE_SHOP_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../sanity/lib/queries.ts
 // Variable: COFFEE_SHOP_QUERY
-// Query: *[_type == "coffeeShop" && slug.current == $slug][0]{    _id,    name,    "slug": slug.current,    shortDescription,    "rating": select(    defined(scores.vibe) && defined(scores.coffee) && defined(scores.affordability) =>      round(math::avg([scores.vibe, scores.coffee, scores.affordability]), 1),    null  ),    "affordability": scores.affordability,    dogFriendly,    ownership,    mainImage{ ..., "lqip": asset->metadata.lqip },    description  }
+// Query: *[_type == "coffeeShop" && slug.current == $slug][0]{    _id,    name,    "slug": slug.current,    shortDescription,    "rating": select(    defined(scores.vibe) && defined(scores.coffee) && defined(scores.affordability) =>      round(math::avg([scores.vibe, scores.coffee, scores.affordability]), 1),    null  ),    "affordability": scores.affordability,    dogFriendly,    ownership,    mainImage{ ..., "lqip": asset->metadata.lqip },    description[]{      ...,      _type == "inlineImage" => {        "lqip": asset->metadata.lqip,        "dimensions": asset->metadata.dimensions{width, height}      }    }  }
 export type COFFEE_SHOP_QUERY_RESULT = {
   _id: string;
   name: string | null;
@@ -251,22 +264,40 @@ export type COFFEE_SHOP_QUERY_RESULT = {
     _type: "image";
     lqip: string | null;
   } | null;
-  description: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }> | null;
+  description: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?:
+          "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        _type: "inlineImage";
+        _key: string;
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      }
+  > | null;
 } | null;
