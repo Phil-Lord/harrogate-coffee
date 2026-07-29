@@ -9,7 +9,7 @@ export default defineCliConfig({
   // Studio ships new Sanity versions without a redeploy. The deploy hostname
   // isn't configurable here in Studio 5 — it's the `--url` flag on the deploy
   // script in package.json.
-  deployment: {autoUpdates: true},
+  deployment: {appId: 'swuxaoojl4mowid1nyodyreo', autoUpdates: true},
   typegen: {
     // Queries live in the Next app, not here.
     path: '../{app,sanity}/**/*.{ts,tsx}',
