@@ -4,7 +4,7 @@ import { defineQuery } from 'next-sanity'
 // queries; `client.fetch` infers them automatically via module augmentation.
 
 // Equal-weighted mean of the three scores, mirrored in JS for the Studio
-// preview (`sanity/lib/rating.ts`). The `defined` guard is needed because
+// preview (`studio/lib/rating.ts`). The `defined` guard is needed because
 // `math::avg` skips nulls instead of propagating them, which would rate a
 // half-scored shop on the scores it happens to have; `required()` can't cover
 // this, as it runs in the Studio but not on API writes. The `null` fallback

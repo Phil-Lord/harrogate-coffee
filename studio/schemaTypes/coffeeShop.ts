@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import { Coffee } from "lucide-react";
 
-import {overallRating} from '@/sanity/lib/rating'
+import {overallRating} from '../lib/rating'
 
 export const coffeeShop = defineType({
   name: 'coffeeShop',
