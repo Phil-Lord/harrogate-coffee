@@ -52,6 +52,12 @@ export const COFFEE_SHOP_QUERY = defineQuery(/* groq */ `
     dogFriendly,
     ownership,
     mainImage{ ..., "lqip": asset->metadata.lqip },
-    description
+    description[]{
+      ...,
+      _type == "inlineImage" => {
+        "lqip": asset->metadata.lqip,
+        "dimensions": asset->metadata.dimensions{width, height}
+      }
+    }
   }
 `)
