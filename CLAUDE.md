@@ -102,7 +102,8 @@ mess.
 
 - **Static/server rendering, not a plain SPA** — the whole premise is ranking in
   Google for a local search term. Static HTML indexes reliably; client-rendered
-  SPAs don't. Statically generate pages (SSG / ISR).
+  SPAs don't. Statically generate pages, revalidated on publish by the Live
+  Content API rather than on a timer.
 - **Fetch Sanity at build time, not per visitor** — keeps us clear of Sanity's
   API-request quota and makes the site fast. The free tier (10k docs, 100GB
   assets/bandwidth, 1M CDN req/mo) is ample for a small curated directory. Free
