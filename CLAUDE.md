@@ -39,6 +39,25 @@ The boundary between them matters:
   `studio/sanity.config.ts` rather than shared — the Studio can't read
   `NEXT_PUBLIC_*` or import across the boundary. Both are public identifiers.
 
+## Live preview (Presentation tool)
+
+The Studio's Presentation tool renders the site in an iframe beside the editor,
+updating on the draft as Jess types, with click-to-edit back to the field. The
+deployed Studio previews the deployed site; `pnpm studio` previews `pnpm dev`
+(`previewUrl.initial` in `studio/sanity.config.ts` picks by Studio origin).
+
+- Needs `SANITY_API_READ_TOKEN` (a Viewer token) in `.env.local` and in Vercel.
+  Without it the site still builds and serves published content — only preview
+  breaks.
+- The token is server-side only: `browserToken: false` in `sanity/lib/live.ts`,
+  because drafts are only ever previewed inside Presentation.
+- Every fetch goes through `sanityFetch`, which tags its queries so
+  `<SanityLive />` can expire them the moment content changes. That's what
+  replaced the 1-hour ISR window — **don't add `export const revalidate` back**.
+- **Anything feeding `<head>` fetches with `stega: false`.** Stega's invisible
+  characters are what make click-to-edit work in the body, and what would wreck
+  the `<title>` this site exists to rank.
+
 ## Commands
 
 Package manager is **pnpm** (not npm).
