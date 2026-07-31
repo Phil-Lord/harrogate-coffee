@@ -1,7 +1,7 @@
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 import { Coffee } from "lucide-react";
 
-import {overallRating} from '@/sanity/lib/rating'
+import {overallRating} from '../lib/rating'
 
 export const coffeeShop = defineType({
   name: 'coffeeShop',
@@ -35,8 +35,38 @@ export const coffeeShop = defineType({
       name: 'description',
       title: 'Description',
       type: 'array',
-      of: [{type: 'block'}],
-      description: 'The fuller write-up shown on the café’s own page.',
+      of: [
+        defineArrayMember({type: 'block'}),
+        defineArrayMember({
+          name: 'inlineImage',
+          title: 'Image',
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alternative text',
+              type: 'string',
+              description: 'Describe the photo for screen readers and SEO.',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+              description: 'Optional line shown under the photo.',
+            }),
+          ],
+          preview: {
+            select: {caption: 'caption', alt: 'alt', media: 'asset'},
+            prepare({caption, alt, media}) {
+              return {title: caption || alt || 'Image', media}
+            },
+          },
+        }),
+      ],
+      description:
+        'The fuller write-up shown on the café’s own page.',
     }),
     defineField({
       name: 'scores',

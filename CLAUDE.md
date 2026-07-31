@@ -17,21 +17,66 @@ is tourists, locals, and families; priorities are speed, ease, and a sleek feel.
 ## Current State
 
 End-to-end slice is live: Next.js 16 App Router (TypeScript, Tailwind v4, pnpm)
-deployed on Vercel, backed by Sanity with the `coffeeShop` schema and Studio
-embedded at `/studio`. The landing list renders styled shadcn cards from a GROQ
-query, and `/coffee-shops/[slug]` detail pages are statically generated. Real
-café content is entered and showing on the live site.
+deployed on Vercel, backed by Sanity with the `coffeeShop` schema. The landing
+list renders styled shadcn cards from a GROQ query, and `/coffee-shops/[slug]`
+detail pages are statically generated. Real café content is entered and showing
+on the live site.
+
+This is a **pnpm workspace with two apps**. The Next.js site is the repo root.
+The Studio is a standalone Vite app in `studio/`, deployed separately to
+`harrogate-coffee.sanity.studio` — it is no longer embedded at `/studio`.
+
+The boundary between them matters:
+
+- `studio/` owns the **schema** (`schemaTypes/`), Studio config, and anything
+  that only runs inside the editor (`studio/lib/rating.ts`).
+- `sanity/` at the root owns the site's **fetching layer** — `client.ts`,
+  `image.ts`, `live.ts`, `queries.ts`. The site never imports from `studio/`,
+  and the Studio never imports from the site.
+- `sanity.types.ts` at the root is the shared artifact, generated from both
+  sides by `pnpm typegen`.
+- `projectId` and `dataset` are deliberately duplicated in
+  `studio/sanity.config.ts` rather than shared — the Studio can't read
+  `NEXT_PUBLIC_*` or import across the boundary. Both are public identifiers.
+
+## Live preview (Presentation tool)
+
+The Studio's Presentation tool renders the site in an iframe beside the editor,
+updating on the draft as Jess types, with click-to-edit back to the field. The
+deployed Studio previews the deployed site; `pnpm studio` previews `pnpm dev`
+(`previewUrl.initial` in `studio/sanity.config.ts` picks by Studio origin).
+
+- Needs `SANITY_API_READ_TOKEN` (a Viewer token) in `.env.local` and in Vercel.
+  Without it the site still builds and serves published content — only preview
+  breaks.
+- The token is server-side only: `browserToken: false` in `sanity/lib/live.ts`,
+  because drafts are only ever previewed inside Presentation.
+- Every fetch goes through `sanityFetch`, which tags its queries so
+  `<SanityLive />` can expire them the moment content changes. That's what
+  replaced the 1-hour ISR window — **don't add `export const revalidate` back**.
+- **Anything feeding `<head>` fetches with `stega: false`.** Stega's invisible
+  characters are what make click-to-edit work in the body, and what would wreck
+  the `<title>` this site exists to rank.
 
 ## Commands
 
 Package manager is **pnpm** (not npm).
 
 ```bash
-pnpm dev      # local dev server
-pnpm build    # production build (run before assuming a change is deploy-safe)
-pnpm start    # serve the production build
-pnpm lint     # eslint
+pnpm dev            # local dev server on :3000
+pnpm build          # production build (run before assuming a change is deploy-safe)
+pnpm start          # serve the production build
+pnpm lint           # eslint (site only — studio/ is ignored)
+pnpm typecheck      # tsc for the site; `pnpm --filter harrogate-coffee-studio typecheck` for the Studio
+
+pnpm studio         # Sanity Studio on :3333, alongside `pnpm dev`
+pnpm typegen        # regenerate sanity.types.ts after a schema *or* query change
+pnpm studio:deploy  # publish studio/ — schema changes don't reach Jess without this
 ```
+
+`pnpm typegen` runs inside `studio/` and writes to the repo root. Run it after
+touching `studio/schemaTypes/` or `sanity/lib/queries.ts` — the two feed the
+same generated file.
 
 **Never run a plain `pnpm build` while the human's `pnpm dev` is running** — it
 writes to the same `.next` and leaves dev serving stale CSS from a URL whose
@@ -76,7 +121,8 @@ mess.
 
 - **Static/server rendering, not a plain SPA** — the whole premise is ranking in
   Google for a local search term. Static HTML indexes reliably; client-rendered
-  SPAs don't. Statically generate pages (SSG / ISR).
+  SPAs don't. Statically generate pages, revalidated on publish by the Live
+  Content API rather than on a timer.
 - **Fetch Sanity at build time, not per visitor** — keeps us clear of Sanity's
   API-request quota and makes the site fast. The free tier (10k docs, 100GB
   assets/bandwidth, 1M CDN req/mo) is ample for a small curated directory. Free

@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/studio/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -43,6 +44,10 @@ next-env.d.ts
 
 # sanity typegen — regenerated artifact from `sanity schema extract`
 schema.json
+
+# sanity studio build output
+/studio/dist
+/studio/.sanity
 
 # playwright mcp — throwaway screenshots/snapshots from visual QA sessions
 .playwright-mcp/

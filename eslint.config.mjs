@@ -13,6 +13,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Studio is a separate app with its own toolchain; these Next.js rules
+    // don't apply to it, and `sanity build` leaves a bundle in studio/dist that
+    // eslint would otherwise lint.
+    "studio/**",
   ]),
 ]);
 

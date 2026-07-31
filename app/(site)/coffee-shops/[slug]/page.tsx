@@ -7,8 +7,8 @@ import { ArrowLeft } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { client } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
+import { sanityFetch } from '@/sanity/lib/live'
 import { COFFEE_SHOP_QUERY, COFFEE_SHOP_SLUGS_QUERY } from '@/sanity/lib/queries'
 import type { COFFEE_SHOP_QUERY_RESULT } from '@/sanity.types'
 import { ShopBadgeRow } from '@/app/_components/ShopBadges'
@@ -17,20 +17,24 @@ import { pageContainer } from '@/app/_lib/layout'
 
 type Props = { params: Promise<{ slug: string }> }
 
-// Statically generated, refreshed at most hourly (ISR).
-export const revalidate = 3600
-
 // Pre-render a page per shop at build time.
 export async function generateStaticParams() {
-  const slugs = await client
-    .withConfig({ useCdn: false })
-    .fetch<{ slug: string }[]>(COFFEE_SHOP_SLUGS_QUERY)
-  return slugs
+  return sanityFetch<{ slug: string }[]>({
+    query: COFFEE_SHOP_SLUGS_QUERY,
+    perspective: 'published',
+    stega: false,
+  })
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const shop = await client.fetch<COFFEE_SHOP_QUERY_RESULT>(COFFEE_SHOP_QUERY, { slug })
+  // `stega: false` or the encoding's invisible characters end up in <title>
+  // and <meta>, which is the search result this whole site is built to win.
+  const shop = await sanityFetch<COFFEE_SHOP_QUERY_RESULT>({
+    query: COFFEE_SHOP_QUERY,
+    params: { slug },
+    stega: false,
+  })
   if (!shop) return {}
   return {
     title: `${shop.name} — Harrogate Coffee Shops`,
@@ -40,7 +44,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CoffeeShopPage({ params }: Props) {
   const { slug } = await params
-  const shop = await client.fetch<COFFEE_SHOP_QUERY_RESULT>(COFFEE_SHOP_QUERY, { slug })
+  const shop = await sanityFetch<COFFEE_SHOP_QUERY_RESULT>({
+    query: COFFEE_SHOP_QUERY,
+    params: { slug },
+  })
   if (!shop) notFound()
 
   return (

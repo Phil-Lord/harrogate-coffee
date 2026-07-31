@@ -1,6 +1,6 @@
 // The overall rating is the equal-weighted mean of the three category scores,
 // computed rather than stored so it can never drift from them. The site gets it
-// from GROQ (see COFFEE_SHOPS_QUERY); this mirrors that arithmetic for the
+// from GROQ (see COFFEE_SHOPS_QUERY in the Next app); this mirrors that arithmetic for the
 // Studio preview — keep the two in step.
 export const SCORE_CATEGORIES = ['vibe', 'coffee', 'affordability'] as const
 

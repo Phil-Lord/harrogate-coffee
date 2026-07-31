@@ -4,7 +4,7 @@ A local directory site that ranks coffee shops in Harrogate, UK. Content is
 curated personally and served as fast, statically generated pages.
 
 - **Framework:** Next.js 16 (App Router), TypeScript
-- **Content + images:** Sanity (queried with GROQ, edited in the embedded Studio)
+- **Content + images:** Sanity (queried with GROQ, edited in the standalone Studio in `studio/`)
 - **Styling:** Tailwind v4
 - **Hosting:** Vercel
 
@@ -19,9 +19,15 @@ pnpm dev      # local dev server at http://localhost:3000
 pnpm build    # production build (run before assuming a change is deploy-safe)
 pnpm start    # serve the production build
 pnpm lint     # eslint
+pnpm studio   # Sanity Studio at http://localhost:3333
+pnpm typegen  # regenerate sanity.types.ts after a schema or query change
 ```
 
-The embedded Sanity Studio (content editor) lives at `/studio`.
+The Sanity Studio (content editor) is a standalone Vite app in `studio/`, run
+separately from the Next.js site. It owns the schema; the site keeps the
+fetching layer in `sanity/lib/`. `pnpm typegen` runs inside `studio/`, it reads
+the schema from there and the queries from `sanity/lib/queries.ts`, and writes
+`sanity.types.ts` at the repo root.
 
 ### Environment variables
 
@@ -56,7 +62,7 @@ rendered to HTML and cached; visitors are served that static file.
 
 ### What happens when you publish a coffee shop
 
-1. You publish a café in the Studio (`/studio`).
+1. You publish a café in the Studio (https://harrogate-coffee.sanity.studio).
 2. A **Sanity webhook** fires a **Vercel deploy hook**, triggering a rebuild.
 3. Vercel re-runs the pages, fetches fresh content, and redeploys the static
    HTML; the café appears within a build cycle (~1 min).
@@ -71,5 +77,16 @@ doesn't fire the webhook, pages still refresh within the hour.
 
 ## Deploying
 
-Pushing to `main` auto-deploys to Vercel. Content changes redeploy automatically
-via the Sanity → Vercel webhook described above.
+**The site** deploys itself: pushing to `main` auto-deploys to Vercel, and
+content changes redeploy via the Sanity → Vercel webhook described above.
+
+**The Studio does not.** It's a separate app with its own hosting, so a schema
+change only reaches Jess once someone runs:
+
+```bash
+pnpm studio:deploy   # publishes studio/ to https://harrogate-coffee.sanity.studio
+```
+
+Sanity version upgrades are the exception — `autoUpdates` in
+`studio/sanity.cli.ts` means the deployed Studio picks those up on its own. It's
+schema and config changes that need the manual deploy.
